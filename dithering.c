@@ -42,13 +42,13 @@ typedef struct
 } Interface;
 
 static Interface INTERFACE =
-{
-        FALSE
-};
+        {
+                FALSE
+        };
 
 MAIN()
 
-void query(void) {
+        void query(void) {
     /// аргументы плагина
     static GimpParamDef args[] = {
             { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
@@ -235,13 +235,13 @@ dithering_dialog (void)
 
     /// создаем новое диалоговое окно
     dialog = gimp_dialog_new(_(PLUG_IN_NAME), KEY_VALS,
-                            NULL, 0,
-                            NULL, "nothing",
+                             NULL, 0,
+                             NULL, "nothing",
 
-                            GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                            GTK_STOCK_OK,     GTK_RESPONSE_OK,
+                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                             GTK_STOCK_OK,     GTK_RESPONSE_OK,
 
-                            NULL);
+                             NULL);
 
     main_vbox = gtk_vbox_new (FALSE, 6);
     gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 6);
