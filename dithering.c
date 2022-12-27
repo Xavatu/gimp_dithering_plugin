@@ -138,7 +138,7 @@ void run(const gchar *name, int nparams, const GimpParam *param,
                 /// прогресс-бар
                 gimp_progress_init("Dithering...");
                 progress = 0;
-                int error0=0, error1=0, error2=0;
+                int error = 0;
 
                 gimp_pixel_rgn_init(&dest_rgn, drawable, sel_x1, sel_y1, (sel_x2-sel_x1), (sel_y2-sel_y1), TRUE, TRUE);
                 gimp_pixel_rgn_init(&src_rgn, drawable, sel_x1, sel_y1, (sel_x2-sel_x1), (sel_y2-sel_y1), FALSE, FALSE);
@@ -184,23 +184,12 @@ void run(const gchar *name, int nparams, const GimpParam *param,
                                     /// применяем порог со значением 127 и считаем новое значение ошибки
                                     /// current = pixel + error
                                     /// error = current - result
-                                    r1 = RGB_FORMATTED(r0 + error0);
-                                    g1 = r1;
-                                    r1 = THRESHOLD(r1, 127);
-                                    error0 = (int) g1 - r1;
-
-                                    g1 = RGB_FORMATTED(g0 + error1);
-                                    r1 = g1;
-                                    g1 = THRESHOLD(g1, 127);
-                                    error1 = (int) r1 - g1;
-
-                                    b1 = RGB_FORMATTED(b0 + error1);
-                                    r1 = b1;
+                                    b1 = RGB_FORMATTED(r1 + error);
+                                    g1 = b1;
                                     b1 = THRESHOLD(b1, 127);
-                                    error1 = (int) r1 - b1;
-
-                                    *dest++ = r1;
-                                    *dest++ = g1;
+                                    error = (int) g1 - b1;
+                                    *dest++ = b1;
+                                    *dest++ = b1;
                                     *dest++ = b1;
                                     break;
                             }
