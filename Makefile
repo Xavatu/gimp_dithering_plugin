@@ -1,25 +1,30 @@
 GIMPTOOL=gimptool-2.0
 CFLAGS = -Wall -g -O3 `gimptool --cflags`
 VERSION=0.1.3
-DIR="dithering$(VERSION)"
+DIR="gimp-plugin-dithering-$(VERSION)"
 
 FILES= \
-	dithering.c \
+	src/dithering.c \
+	src/colored_dithering.c \
 	Makefile \
-	Makefile.win \
-	README \
-	dithering.dev
+	LICENSE \
+	README.md
 
-all: dithering
+PLUGS = dithering colored_dithering
 
-dithering: dithering.c
-	$(GIMPTOOL) --build dithering.c
+all: $(PLUGS)
 
-install: dithering
-	$(GIMPTOOL) --install-bin dithering
+dithering: src/dithering.c
+	$(GIMPTOOL) --build $<
+
+colored_dithering: src/colored_dithering.c
+	$(GIMPTOOL) --build $<
+
+install: $(PLUGS)
+	$(GIMPTOOL) --install-bin $(PLUGS)
 
 uninstall:
-	$(GIMPTOOL) --uninstall dithering
+	$(GIMPTOOL) --uninstall $(PLUGS)
 
 dist: $(FILES)
 	mkdir $(DIR)
@@ -28,4 +33,4 @@ dist: $(FILES)
 	rm -Rf $(DIR)
 
 clean:
-	rm -f dithering
+	rm -f $(PLUGS)
