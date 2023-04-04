@@ -21,53 +21,58 @@
 
 
 /// предварительно подсчитанные матрицы Байера
-const	int BAYER_PATTERN_2X2[2][2]		=	{	//	2x2 Bayer Dithering Matrix. Color levels: 5
-        {	 51, 206	},
-        {	153, 102	}
+const	int BAYER_PATTERN_2X2[2][2]		=	 	//	2x2 Bayer Dithering Matrix. Color levels: 5
+{
+    {	 51, 206	},
+    {	153, 102	}
 };
 
-const	int BAYER_PATTERN_3X3[3][3]		=	{	//	3x3 Bayer Dithering Matrix. Color levels: 10
-        {	 181, 231, 131	},
-        {	  50,  25, 100	},
-        {	 156,  75, 206	}
+const	int BAYER_PATTERN_3X3[3][3]		=	 	//	3x3 Bayer Dithering Matrix. Color levels: 10
+{
+    {	 181, 231, 131	},
+    {	  50,  25, 100	},
+    {	 156,  75, 206	}
 };
 
-const	int BAYER_PATTERN_4X4[4][4]		=	{	//	4x4 Bayer Dithering Matrix. Color levels: 17
-        {	 15, 195,  60, 240	},
-        {	135,  75, 180, 120	},
-        {	 45, 225,  30, 210	},
-        {	165, 105, 150,  90	}
+const	int BAYER_PATTERN_4X4[4][4]		=	 	//	4x4 Bayer Dithering Matrix. Color levels: 17
+{
+    {	 15, 195,  60, 240	},
+    {	135,  75, 180, 120	},
+    {	 45, 225,  30, 210	},
+    {	165, 105, 150,  90	}
 
 };
 
-const	int BAYER_PATTERN_8X8[8][8]		=	{	//	8x8 Bayer Dithering Matrix. Color levels: 65
-        {	  0, 128,  32, 160,   8, 136,  40, 168	},
-        {	192,  64, 224,  96, 200,  72, 232, 104	},
-        {	 48, 176,  16, 144,  56, 184,  24, 152	},
-        {	240, 112, 208,  80, 248, 120, 216,  88	},
-        {	 12, 140,  44, 172,   4, 132,  36, 164	},
-        {	204,  76, 236, 108, 196,  68, 228, 100	},
-        {	 60, 188,  28, 156,  52, 180,  20, 148	},
-        {	252, 124, 220,  92, 244, 116, 212,  84	}
+const	int BAYER_PATTERN_8X8[8][8]		=	 	//	8x8 Bayer Dithering Matrix. Color levels: 65
+{
+    {	  0, 128,  32, 160,   8, 136,  40, 168	},
+    {	192,  64, 224,  96, 200,  72, 232, 104	},
+    {	 48, 176,  16, 144,  56, 184,  24, 152	},
+    {	240, 112, 208,  80, 248, 120, 216,  88	},
+    {	 12, 140,  44, 172,   4, 132,  36, 164	},
+    {	204,  76, 236, 108, 196,  68, 228, 100	},
+    {	 60, 188,  28, 156,  52, 180,  20, 148	},
+    {	252, 124, 220,  92, 244, 116, 212,  84	}
 };
 
-const	int	BAYER_PATTERN_16X16[16][16]	=	{	//	16x16 Bayer Dithering Matrix.  Color levels: 256
-        {	  0, 191,  48, 239,  12, 203,  60, 251,   3, 194,  51, 242,  15, 206,  63, 254	},
-        {	127,  64, 175, 112, 139,  76, 187, 124, 130,  67, 178, 115, 142,  79, 190, 127	},
-        {	 32, 223,  16, 207,  44, 235,  28, 219,  35, 226,  19, 210,  47, 238,  31, 222	},
-        {	159,  96, 143,  80, 171, 108, 155,  92, 162,  99, 146,  83, 174, 111, 158,  95	},
-        {	  8, 199,  56, 247,   4, 195,  52, 243,  11, 202,  59, 250,   7, 198,  55, 246	},
-        {	135,  72, 183, 120, 131,  68, 179, 116, 138,  75, 186, 123, 134,  71, 182, 119	},
-        {	 40, 231,  24, 215,  36, 227,  20, 211,  43, 234,  27, 218,  39, 230,  23, 214	},
-        {	167, 104, 151,  88, 163, 100, 147,  84, 170, 107, 154,  91, 166, 103, 150,  87	},
-        {	  2, 193,  50, 241,  14, 205,  62, 253,   1, 192,  49, 240,  13, 204,  61, 252	},
-        {	129,  66, 177, 114, 141,  78, 189, 126, 128,  65, 176, 113, 140,  77, 188, 125	},
-        {	 34, 225,  18, 209,  46, 237,  30, 221,  33, 224,  17, 208,  45, 236,  29, 220	},
-        {	161,  98, 145,  82, 173, 110, 157,  94, 160,  97, 144,  81, 172, 109, 156,  93	},
-        {	 10, 201,  58, 249,   6, 197,  54, 245,   9, 200,  57, 248,   5, 196,  53, 244	},
-        {	137,  74, 185, 122, 133,  70, 181, 118, 136,  73, 184, 121, 132,  69, 180, 117	},
-        {	 42, 233,  26, 217,  38, 229,  22, 213,  41, 232,  25, 216,  37, 228,  21, 212	},
-        {	169, 106, 153,  90, 165, 102, 149,  86, 168, 105, 152,  89, 164, 101, 148,  85	}
+const	int	BAYER_PATTERN_16X16[16][16]	=	 	//	16x16 Bayer Dithering Matrix.  Color levels: 256
+{
+    {	  0, 191,  48, 239,  12, 203,  60, 251,   3, 194,  51, 242,  15, 206,  63, 254	},
+    {	127,  64, 175, 112, 139,  76, 187, 124, 130,  67, 178, 115, 142,  79, 190, 127	},
+    {	 32, 223,  16, 207,  44, 235,  28, 219,  35, 226,  19, 210,  47, 238,  31, 222	},
+    {	159,  96, 143,  80, 171, 108, 155,  92, 162,  99, 146,  83, 174, 111, 158,  95	},
+    {	  8, 199,  56, 247,   4, 195,  52, 243,  11, 202,  59, 250,   7, 198,  55, 246	},
+    {	135,  72, 183, 120, 131,  68, 179, 116, 138,  75, 186, 123, 134,  71, 182, 119	},
+    {	 40, 231,  24, 215,  36, 227,  20, 211,  43, 234,  27, 218,  39, 230,  23, 214	},
+    {	167, 104, 151,  88, 163, 100, 147,  84, 170, 107, 154,  91, 166, 103, 150,  87	},
+    {	  2, 193,  50, 241,  14, 205,  62, 253,   1, 192,  49, 240,  13, 204,  61, 252	},
+    {	129,  66, 177, 114, 141,  78, 189, 126, 128,  65, 176, 113, 140,  77, 188, 125	},
+    {	 34, 225,  18, 209,  46, 237,  30, 221,  33, 224,  17, 208,  45, 236,  29, 220	},
+    {	161,  98, 145,  82, 173, 110, 157,  94, 160,  97, 144,  81, 172, 109, 156,  93	},
+    {	 10, 201,  58, 249,   6, 197,  54, 245,   9, 200,  57, 248,   5, 196,  53, 244	},
+    {	137,  74, 185, 122, 133,  70, 181, 118, 136,  73, 184, 121, 132,  69, 180, 117	},
+    {	 42, 233,  26, 217,  38, 229,  22, 213,  41, 232,  25, 216,  37, 228,  21, 212	},
+    {	169, 106, 153,  90, 165, 102, 149,  86, 168, 105, 152,  89, 164, 101, 148,  85	}
 };
 
 
@@ -76,14 +81,16 @@ void run(const gchar *name, int nparams, const GimpParam *param, int *nreturn_va
 static gint dithering_dialog(void);
 
 
-GimpPlugInInfo PLUG_IN_INFO = {
-        NULL, /* init_proc */
-        NULL, /* quit_proc */
-        query,        /* query_proc */
-        run   /* run_proc */
+GimpPlugInInfo PLUG_IN_INFO =
+{
+    NULL, /* init_proc */
+    NULL, /* quit_proc */
+    query,        /* query_proc */
+    run   /* run_proc */
 };
 
-enum {
+enum
+{
     _2x2,
     _3x3,
     _4x4,
@@ -99,22 +106,24 @@ typedef struct
 } Interface;
 
 static Interface INTERFACE =
-        {
-                FALSE,
-                0,
-                255
-        };
+{
+    FALSE,
+    0,
+    255
+};
 
 MAIN()
 
-        void query(void) {
+void query(void)
+{
     /// аргументы плагина
-    static GimpParamDef args[] = {
-            { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-            { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
-            { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-            { GIMP_PDB_INT8, "method", "matrix size 0=2x2/1=3x3/2=4x4/4=8x8/5=16x16" },
-            { GIMP_PDB_INT8, "ranges", "color ranges 0...255"}
+    static GimpParamDef args[] =
+    {
+        { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
+        { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
+        { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
+        { GIMP_PDB_INT8, "method", "matrix size 0=2x2/1=3x3/2=4x4/4=8x8/5=16x16" },
+        { GIMP_PDB_INT8, "ranges", "color ranges 0...255"}
     };
 
     static GimpParamDef *return_vals  = NULL;
@@ -123,19 +132,19 @@ MAIN()
 
     /// установка процедуры в Gimp в качестве плагина
     gimp_install_procedure(
-            PLUG_IN_NAME,
-            "123",
-            "123",
-            "Eldar Dautov",
-            "xavatu@gmail.com",
-            PLUG_IN_VERSION,
-            "<Image>/Filters/colored-dithering",
-            "RGB*",
-            GIMP_PLUGIN,
-            nargs,
-            nreturn_vals,
-            args,
-            return_vals);
+        PLUG_IN_NAME,
+        "123",
+        "123",
+        "Eldar Dautov",
+        "xavatu@gmail.com",
+        PLUG_IN_VERSION,
+        "<Image>/Filters/colored-dithering",
+        "RGB*",
+        GIMP_PLUGIN,
+        nargs,
+        nreturn_vals,
+        args,
+        return_vals);
 }
 
 
@@ -152,7 +161,8 @@ int comp (guchar *elem1, guchar *elem2)
 
 /// функция запуска плагина
 void run(const gchar *name, int nparams, const GimpParam *param,
-         int *nreturn_vals, GimpParam **return_vals) {
+         int *nreturn_vals, GimpParam **return_vals)
+{
     static GimpParam values[1];
 
     gint sel_x1, sel_y1, sel_x2, sel_y2;
@@ -194,7 +204,8 @@ void run(const gchar *name, int nparams, const GimpParam *param,
 
     max_progress = (sel_x2-sel_x1)*(sel_y2-sel_y1);
 
-    if (run_mode == GIMP_RUN_INTERACTIVE) {
+    if (run_mode == GIMP_RUN_INTERACTIVE)
+    {
         gimp_get_data(PLUG_IN_NAME, &INTERFACE.method);
         /// если интерактивный запуск, то выводим диалоговое окно
         if (! dithering_dialog())
@@ -219,7 +230,8 @@ void run(const gchar *name, int nparams, const GimpParam *param,
                 gimp_pixel_rgn_init(&src_rgn, drawable, sel_x1, sel_y1, (sel_x2-sel_x1), (sel_y2-sel_y1), FALSE, FALSE);
 
                 for (pr = (GimpPixelRgn *) gimp_pixel_rgns_register(2, &src_rgn, &dest_rgn);
-                     pr != NULL; pr = (GimpPixelRgn *) gimp_pixel_rgns_process(pr)) {
+                        pr != NULL; pr = (GimpPixelRgn *) gimp_pixel_rgns_process(pr))
+                {
 
                     dest_row = dest_rgn.data;
                     src_row = src_rgn.data;
@@ -227,11 +239,13 @@ void run(const gchar *name, int nparams, const GimpParam *param,
                     X = src_rgn.x;
                     Y = src_rgn.y;
 
-                    for (row = 0; row < dest_rgn.h; row++) {
+                    for (row = 0; row < dest_rgn.h; row++)
+                    {
                         dest = dest_row;
                         src = src_row;
 
-                        for (col = 0; col < dest_rgn.w; col++) {
+                        for (col = 0; col < dest_rgn.w; col++)
+                        {
                             /// получаем значение пикселей в 3-х каналах
                             r0 = *src++;
                             g0 = *src++;
@@ -241,32 +255,39 @@ void run(const gchar *name, int nparams, const GimpParam *param,
                             x = j % src_rgn.w + X;
                             y = j / src_rgn.w + Y;
 
-                            switch (INTERFACE.method) {
-                                case _2x2:
-                                    bayer_value =  BAYER_PATTERN_2X2[x%2][y%2];
-                                    break;
-                                case _3x3:
-                                    bayer_value =  BAYER_PATTERN_3X3[x%3][y%3];
-                                    break;
-                                case _4x4:
-                                    bayer_value =  BAYER_PATTERN_4X4[x%4][y%4];
-                                    break;
-                                case _8x8:
-                                    bayer_value =  BAYER_PATTERN_8X8[x%8][y%8];
-                                    break;
-                                case _16x16:
-                                    bayer_value =  BAYER_PATTERN_16X16[x%16][y%16];
-                                    break;
+                            switch (INTERFACE.method)
+                            {
+                            case _2x2:
+                                bayer_value =  BAYER_PATTERN_2X2[x%2][y%2];
+                                break;
+                            case _3x3:
+                                bayer_value =  BAYER_PATTERN_3X3[x%3][y%3];
+                                break;
+                            case _4x4:
+                                bayer_value =  BAYER_PATTERN_4X4[x%4][y%4];
+                                break;
+                            case _8x8:
+                                bayer_value =  BAYER_PATTERN_8X8[x%8][y%8];
+                                break;
+                            case _16x16:
+                                bayer_value =  BAYER_PATTERN_16X16[x%16][y%16];
+                                break;
                             }
 
                             corr = bayer_value / INTERFACE.ranges;
-                            r1 = (r0 + corr) / div; CLAMP(r1, 0, INTERFACE.ranges);
-                            g1 = (g0 + corr) / div; CLAMP(g1, 0, INTERFACE.ranges);
-                            b1 = (b0 + corr) / div; CLAMP(b1, 0, INTERFACE.ranges);
+                            r1 = (r0 + corr) / div;
+                            CLAMP(r1, 0, INTERFACE.ranges);
+                            g1 = (g0 + corr) / div;
+                            CLAMP(g1, 0, INTERFACE.ranges);
+                            b1 = (b0 + corr) / div;
+                            CLAMP(b1, 0, INTERFACE.ranges);
 
-                            r1 *= div; CLAMP(r1, 0, 255);
-                            g1 *= div; CLAMP(g1, 0, 255);
-                            b1 *= div; CLAMP(b1, 0, 255);
+                            r1 *= div;
+                            CLAMP(r1, 0, 255);
+                            g1 *= div;
+                            CLAMP(g1, 0, 255);
+                            b1 *= div;
+                            CLAMP(b1, 0, 255);
 
                             *dest++ = RGB_FORMATTED(r1);
                             *dest++ = RGB_FORMATTED(g1);

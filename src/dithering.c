@@ -10,7 +10,7 @@
 #define GET_MIN(x,y) (((x)<(y))?(x):(y))
 #define RGB_FORMATTED(x) ((x>255)?255:((x<0)?0:x))
 #define THRESHOLD(x,y) ((x>=y)?255:0)
-#define _(x)	x
+#define _(x)    x
 
 #define PLUG_IN_NAME "xavatu-dithering"
 #define PLUG_IN_VERSION "Dec. 2022, 0.0"
@@ -22,14 +22,16 @@ void run(const gchar *name, int nparams, const GimpParam *param, int *nreturn_va
 static gint dithering_dialog(void);
 
 
-GimpPlugInInfo PLUG_IN_INFO = {
-        NULL, /* init_proc */
-        NULL, /* quit_proc */
-        query,        /* query_proc */
-        run   /* run_proc */
+GimpPlugInInfo PLUG_IN_INFO =
+{
+    NULL, /* init_proc */
+    NULL, /* quit_proc */
+    query,        /* query_proc */
+    run   /* run_proc */
 };
 
-enum {
+enum
+{
     threshold_dithering,    /// обычный порог
     random_dithering,       /// рандомный порог
     shift_dithering         /// сдвиговый (с распространением ошибки)
@@ -42,19 +44,21 @@ typedef struct
 } Interface;
 
 static Interface INTERFACE =
-        {
-                FALSE
-        };
+{
+    FALSE
+};
 
 MAIN()
 
-        void query(void) {
+void query(void)
+{
     /// аргументы плагина
-    static GimpParamDef args[] = {
-            { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
-            { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
-            { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
-            { GIMP_PDB_INT8, "method", "method 0=threshold/1=random/2=shift" }
+    static GimpParamDef args[] =
+    {
+        { GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive" },
+        { GIMP_PDB_IMAGE, "image", "Input image (unused)" },
+        { GIMP_PDB_DRAWABLE, "drawable", "Input drawable" },
+        { GIMP_PDB_INT8, "method", "method 0=threshold/1=random/2=shift" }
     };
 
     static GimpParamDef *return_vals  = NULL;
@@ -63,25 +67,26 @@ MAIN()
 
     /// установка процедуры в Gimp в качестве плагина
     gimp_install_procedure(
-            PLUG_IN_NAME,
-            "123",
-            "123",
-            "Eldar Dautov",
-            "xavatu@gmail.com",
-            PLUG_IN_VERSION,
-            "<Image>/Filters/dithering",
-            "RGB*",
-            GIMP_PLUGIN,
-            nargs,
-            nreturn_vals,
-            args,
-            return_vals);
+        PLUG_IN_NAME,
+        "123",
+        "123",
+        "Eldar Dautov",
+        "xavatu@gmail.com",
+        PLUG_IN_VERSION,
+        "<Image>/Filters/dithering",
+        "RGB*, GRAY*",
+        GIMP_PLUGIN,
+        nargs,
+        nreturn_vals,
+        args,
+        return_vals);
 }
 
 
 /// функция запуска плагина
 void run(const gchar *name, int nparams, const GimpParam *param,
-         int *nreturn_vals, GimpParam **return_vals) {
+         int *nreturn_vals, GimpParam **return_vals)
+{
     static GimpParam values[1];
 
     gint sel_x1, sel_y1, sel_x2, sel_y2;
@@ -92,11 +97,11 @@ void run(const gchar *name, int nparams, const GimpParam *param,
     GimpRunMode         run_mode;
     GimpPDBStatusType   status;
 
-    double progress, max_progress;
+    gdouble progress, max_progress;
 
     guchar * dest_row, *src_row, *dest, *src;
-    double  r0, g0, b0, a=0, r1, g1, b1;
-    gint row, col;
+    gint  c0, a = 0, c1, c2, c3;
+    gint row, col, ch, min, max;
 
     *nreturn_vals = 1;
     *return_vals  = values;
@@ -120,12 +125,16 @@ void run(const gchar *name, int nparams, const GimpParam *param,
 
     max_progress = (sel_x2-sel_x1)*(sel_y2-sel_y1);
 
-    if (run_mode == GIMP_RUN_INTERACTIVE) {
+    if (run_mode == GIMP_RUN_INTERACTIVE)
+    {
         gimp_get_data(PLUG_IN_NAME, &INTERFACE.method);
         /// если интерактивный запуск, то выводим диалоговое окно
         if (! dithering_dialog())
             status = GIMP_PDB_EXECUTION_ERROR;
     }
+
+    /// alpha отдельно
+    if (img_has_alpha) img_bpp--;
 
     if (status == GIMP_PDB_SUCCESS)
     {
@@ -143,59 +152,61 @@ void run(const gchar *name, int nparams, const GimpParam *param,
                 gimp_pixel_rgn_init(&dest_rgn, drawable, sel_x1, sel_y1, (sel_x2-sel_x1), (sel_y2-sel_y1), TRUE, TRUE);
                 gimp_pixel_rgn_init(&src_rgn, drawable, sel_x1, sel_y1, (sel_x2-sel_x1), (sel_y2-sel_y1), FALSE, FALSE);
 
-                for (pr = (GimpPixelRgn *) gimp_pixel_rgns_register(2, &src_rgn, &dest_rgn);
-                     pr != NULL;
-                     pr = (GimpPixelRgn *) gimp_pixel_rgns_process(pr)) {
+                for (pr = (GimpPixelRgn *) gimp_pixel_rgns_register(2, &src_rgn, &dest_rgn); pr != NULL; pr = (GimpPixelRgn *) gimp_pixel_rgns_process(pr))
+                {
 
                     dest_row = dest_rgn.data;
                     src_row = src_rgn.data;
-                    for (row = 0; row < dest_rgn.h; row++) {
+                    for (row = 0; row < dest_rgn.h; row++)
+                    {
                         dest = dest_row;
                         src = src_row;
-                        for (col = 0; col < dest_rgn.w; col++) {
+                        for (col = 0; col < dest_rgn.w; col++)
+                        {
                             /// получаем значение пикселей в 3-х каналах
-                            r0 = *src++;
-                            g0 = *src++;
-                            b0 = *src++;
-                            if (img_has_alpha)	a = *src++;
+                            min = 255;
+                            max = 0;
+                            for (ch = 0; ch < img_bpp; ch++)
+                            {
+                                c0 = *src++;
+                                min = GET_MIN(min, c0);
+                                max = GET_MAX(max, c0);
+                            }
+                            if (img_has_alpha) a = *src++;
 
                             /// выбираем среднее значение из трех каналов по формуле AVERAGE = (MIN(R,G,B) + MAX(R,G,B)) / 2
-                            r1 = (GET_MIN(GET_MIN(r0, g0), b0) + GET_MAX(GET_MAX(r0, g0), b0)) / 2;
+                            /// 2 * AVERAGE = (MIN(R,G,B) + MAX(R,G,B))
+                            c1 = (min + max);
 
-                            switch (INTERFACE.method) {
-                                case threshold_dithering:
-                                    /// применяем порог со значением 127
-                                    r1 = THRESHOLD(r1, 127);
-                                    *dest++ = r1;
-                                    *dest++ = r1;
-                                    *dest++ = r1;
-                                    break;
-                                case random_dithering:
-                                    /// рандомно выбираем значение в диапазоне (0, 255)
-                                    /// и если оно больше текущего, то значение 0, иначе 255
-                                    /// (порог со значением r1)
-                                    g1 = THRESHOLD(r1, random() % 256);
-                                    *dest++ = g1;
-                                    *dest++ = g1;
-                                    *dest++ = g1;
-                                    break;
-                                case shift_dithering:
-                                    /// получаем новое значения путем суммирования со значением ошибки
-                                    /// применяем порог со значением 127 и считаем новое значение ошибки
-                                    /// current = pixel + error
-                                    /// error = current - result
-                                    b1 = RGB_FORMATTED(r1 + error);
-                                    g1 = b1;
-                                    b1 = THRESHOLD(b1, 127);
-                                    error = (int) g1 - b1;
-                                    *dest++ = b1;
-                                    *dest++ = b1;
-                                    *dest++ = b1;
-                                    break;
+                            switch (INTERFACE.method)
+                            {
+                            case threshold_dithering:
+                                /// применяем порог со значением 127
+                                c2 = THRESHOLD(c1, 255);
+                                break;
+                            case random_dithering:
+                                /// рандомно выбираем значение в диапазоне (0, 255)
+                                /// и если оно больше текущего, то значение 0, иначе 255
+                                /// (порог со значением r1)
+                                c2 = THRESHOLD(c1, random() % 510);
+                                break;
+                            case shift_dithering:
+                                /// получаем новое значения путем суммирования со значением ошибки
+                                /// применяем порог со значением 127 и считаем новое значение ошибки
+                                /// current = pixel + error
+                                /// error = current - result
+                                c3 = RGB_FORMATTED(c1 + error);
+                                c2 = THRESHOLD(c3, 255);
+                                error = (int) c3 - c2;
+                                break;
                             }
 
+                            for (ch = 0; ch < img_bpp; ch++)
+                            {
+                                *dest++ = (guchar) c2;
+                            }
                             /// альфа-канал оставляем без изменений
-                            if (img_has_alpha)	*dest++ = (guchar) a;
+                            if (img_has_alpha)  *dest++ = (guchar) a;
                         }
                         dest_row += dest_rgn.rowstride;
                         src_row += src_rgn.rowstride;
